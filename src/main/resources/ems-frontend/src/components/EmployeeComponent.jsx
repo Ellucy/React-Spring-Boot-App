@@ -1,28 +1,25 @@
 import React from "react";
 import { useState } from "react";
+import { createEmployee } from "../services/EmployeeService";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
-  function handleFirstName(e) {
-    setFirstName(e.target.value);
-  }
-
-  function handleLastName(e) {
-    setLastName(e.target.value);
-  }
-
-  function handleEmail(e) {
-    setEmail(e.target.value);
-  }
+  const navigator = useNavigate();
 
   function saveEmployee(e) {
     e.preventDefault();
 
     const employee = { firstName, lastName, email };
     console.log(employee);
+
+    createEmployee(employee).then((response) => {
+      console.log(response.data);
+      navigator("/employees");
+    });
   }
 
   return (
@@ -40,7 +37,7 @@ const EmployeeComponent = () => {
                   name="firstName"
                   value={firstName}
                   className="form-control"
-                  onChange={handleFirstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 ></input>
               </div>
 
@@ -52,7 +49,7 @@ const EmployeeComponent = () => {
                   name="lastName"
                   value={lastName}
                   className="form-control"
-                  onChange={handleLastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 ></input>
               </div>
 
@@ -64,7 +61,7 @@ const EmployeeComponent = () => {
                   name="email"
                   value={email}
                   className="form-control"
-                  onChange={handleEmail}
+                  onChange={(e) => setEmail(e.target.value)}
                 ></input>
               </div>
 
